@@ -23,7 +23,7 @@ CONTRACT cpool: public contract {
             } 
         }
 
-        ACTION addpost(name user_name, string loc_desc, string loc_param, uint64_t car_size, string cost_trip){
+        ACTION addpost(name user_name, string post_title, string loc_desc, string loc_param, uint64_t car_size, string cost_trip){
             require_auth(user_name);
             carpool_index _cpool_index(get_self(), get_first_receiver().value);
 
@@ -36,6 +36,7 @@ CONTRACT cpool: public contract {
                 row.cost_jorn = cost_trip;
                 row.car_space = car_size;
                 row.delete_post = 0;
+                row.post_title = post_title;
                 
             });
             print("Trip Successfully Posted");
@@ -126,6 +127,7 @@ CONTRACT cpool: public contract {
             string loc_param;
             string cost_jorn;
             uint64_t delete_post;
+            string post_title;
 
             auto primary_key() const {return log_id;}
             auto by_username() const {return username.value;}
