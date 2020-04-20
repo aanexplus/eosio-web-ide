@@ -10,6 +10,19 @@ CONTRACT cpool: public contract {
         contract(receiver, code, ds){}
         
         //Methods Declaration
+
+        ACTION login(name username){
+            require_auth(username);
+            users_table _users(get_self(), get_first_receiver().value);
+            // Create a record in the table if the player doesn't exist in our app yet
+            auto user_iterator = _users.find(username.value);
+            if (user_iterator == _users.end()) {
+                user_iterator = _users.emplace(username,  [&](auto& new_user) {
+                new_user.username = username;
+                });
+            } 
+        }
+
         ACTION addpost(name user_name, string loc_desc, string loc_param, uint64_t car_size, string cost_trip){
             require_auth(user_name);
             carpool_index _cpool_index(get_self(), get_first_receiver().value);
@@ -118,6 +131,16 @@ CONTRACT cpool: public contract {
             auto by_username() const {return username.value;}
         };
         typedef multi_index <name("carpoolt"), carpoolog> carpool_index;
+
+        TABLE user_info {
+            name            username;
+            uint16_t        win_count = 0;
+            uint16_t        lost_count = 0;
+
+            auto primary_key() const { return username.value; }
+         };
+
+        typedef eosio::multi_index<name("users"), user_info> users_table;
 
         TABLE joinride{
 
