@@ -19,6 +19,7 @@ CONTRACT cpool: public contract {
         
         //Methods Declaration
 
+<<<<<<< HEAD
           //Calculate winners
   [[eosio::action]]
   void calwinners( )
@@ -127,6 +128,8 @@ CONTRACT cpool: public contract {
   }
 
 
+=======
+>>>>>>> 09e6c67883b69200098933d61e4fc8f931c9eebe
         ACTION login(name username){
             require_auth(username);
             users_table _users(get_self(), get_first_receiver().value);
